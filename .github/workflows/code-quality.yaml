@@ -1,0 +1,44 @@
+name: check code quality
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**.rs"
+      - "Cargo.toml"
+      - "Cargo.lock"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "**.rs"
+      - "Cargo.toml"
+      - "Cargo.lock"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Caching
+        uses: Swatinem/rust-cache@v2
+
+      - name: Format check
+        run: cargo fmt --all --check
+
+      - name: Lint check
+        run: cargo clippy --all-features
+
+      - name: Unused dependencies check
+        uses: bnjbvr/cargo-machete@main
