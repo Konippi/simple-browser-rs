@@ -29,7 +29,7 @@ impl Parser {
         let mut nodes = Vec::new();
         loop {
             self.consume_whitespace();
-            if self.eof() || self.starts_with("</") {
+            if self.is_eof() || self.starts_with("</") {
                 break;
             }
             nodes.push(self.parse_node());
@@ -120,13 +120,14 @@ impl Parser {
         condition: impl Fn(char) -> bool,
     ) -> String {
         let mut result = String::new();
-        while !self.eof() && condition(self.next_char()) {
+        while !self.is_eof() && condition(self.next_char()) {
             result.push(self.consume_char());
         }
         result
     }
 
     // Consume a character.
+    #[inline]
     fn consume_char(&mut self) -> char {
         let c = self.next_char();
         self.pos += c.len_utf8();
@@ -134,11 +135,13 @@ impl Parser {
     }
 
     // Read the next character from the input.
+    #[inline]
     fn next_char(&self) -> char {
         self.input[self.pos..].chars().next().unwrap()
     }
 
     // Check if the input starts with a given string.
+    #[inline]
     fn starts_with(&self, s: &str) -> bool {
         self.input[self.pos..].starts_with(s)
     }
@@ -157,7 +160,8 @@ impl Parser {
     }
 
     // Check if the input is at the end
-    fn eof(&self) -> bool {
+    #[inline]
+    fn is_eof(&self) -> bool {
         self.pos >= self.input.len()
     }
 }
