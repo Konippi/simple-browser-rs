@@ -67,7 +67,7 @@ impl Parser {
 
     // Parse a text node.
     fn parse_text(&mut self) -> Node {
-        Node::new_by_text(self.consume_consecutive_chars(|c| c != '<'))
+        Node::new_by_text(self.consume_chars_while(|c| c != '<'))
     }
 
     // Parse attributes.
@@ -94,40 +94,40 @@ impl Parser {
 
     // Parse an attribute value.
     fn parse_attribute_value(&mut self) -> String {
-        let open_quote = self.consume_while();
+        let open_quote = self.consume_char();
         assert!(open_quote == '"' || open_quote == '\'');
-        let value = self.consume_consecutive_chars(|c| c != open_quote);
-        let close_quote = self.consume_while();
+        let value = self.consume_chars_while(|c| c != open_quote);
+        let close_quote = self.consume_char();
         assert_eq!(open_quote, close_quote);
         value
     }
 
     // Parse a tag or attribute name.
     fn parse_name(&mut self) -> String {
-        self.consume_consecutive_chars(
+        self.consume_chars_while(
             |c| matches!(c, 'a'..='z' | 'A'..='Z' | '0'..='9'),
         )
     }
 
     // Consume whitespace.
     fn consume_whitespace(&mut self) {
-        self.consume_consecutive_chars(char::is_whitespace);
+        self.consume_chars_while(char::is_whitespace);
     }
 
-    // Consume consecutive characters that match the given test.
-    fn consume_consecutive_chars(
+    // Consume characters while the condition is true.
+    fn consume_chars_while(
         &mut self,
         condition: impl Fn(char) -> bool,
     ) -> String {
         let mut result = String::new();
         while !self.eof() && condition(self.next_char()) {
-            result.push(self.consume_while());
+            result.push(self.consume_char());
         }
         result
     }
 
-    // Consume characters while the condition is true.
-    fn consume_while(&mut self) -> char {
+    // Consume a character.
+    fn consume_char(&mut self) -> char {
         let c = self.next_char();
         self.pos += c.len_utf8();
         c
