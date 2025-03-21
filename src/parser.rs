@@ -94,10 +94,10 @@ impl Parser {
 
     // Parse an attribute value.
     fn parse_attribute_value(&mut self) -> String {
-        let open_quote = self.consume_char();
+        let open_quote = self.consume_while();
         assert!(open_quote == '"' || open_quote == '\'');
         let value = self.consume_consecutive_chars(|c| c != open_quote);
-        let close_quote = self.consume_char();
+        let close_quote = self.consume_while();
         assert_eq!(open_quote, close_quote);
         value
     }
@@ -121,13 +121,13 @@ impl Parser {
     ) -> String {
         let mut result = String::new();
         while !self.eof() && condition(self.next_char()) {
-            result.push(self.consume_char());
+            result.push(self.consume_while());
         }
         result
     }
 
-    // Consume the next character.
-    fn consume_char(&mut self) -> char {
+    // Consume characters while the condition is true.
+    fn consume_while(&mut self) -> char {
         let c = self.next_char();
         self.pos += c.len_utf8();
         c

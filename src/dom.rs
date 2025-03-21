@@ -7,6 +7,7 @@ pub struct Node {
 }
 
 impl Node {
+    // Create a node by given text.
     pub fn new_by_text(text: String) -> Self {
         Self {
             children: vec![],
@@ -14,6 +15,7 @@ impl Node {
         }
     }
 
+    // Create a node by given element data.
     pub fn new_by_element(
         tag_name: String,
         attributes: AttributeMap,
@@ -44,10 +46,12 @@ struct ElementData {
 pub type AttributeMap = HashMap<String, String>;
 
 impl ElementData {
+    // Get id.
     pub fn id(&self) -> Option<&String> {
         self.attributes.get("id")
     }
 
+    // Get classes.
     pub fn classes(&self) -> HashSet<&str> {
         match self.attributes.get("class") {
             Some(classes) => classes.split(' ').collect(),
