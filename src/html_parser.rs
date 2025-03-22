@@ -2,12 +2,13 @@ use std::collections::HashMap;
 
 use crate::dom::{AttributeMap, Node};
 
-pub struct Parser {
+#[derive(Debug)]
+pub struct HTMLParser {
     pos: usize,
     input: String,
 }
 
-impl Parser {
+impl HTMLParser {
     // Parse an HTML document, returning the root element.
     pub fn parse(source: String) -> Node {
         let mut nodes = Self {
@@ -65,7 +66,7 @@ impl Parser {
         Node::new_by_element(tag_name, attributes, children)
     }
 
-    // Parse a text node.
+    // Parse a text.
     fn parse_text(&mut self) -> Node {
         Node::new_by_text(self.consume_chars_while(|c| c != '<'))
     }

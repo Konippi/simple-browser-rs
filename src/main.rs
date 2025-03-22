@@ -1,8 +1,9 @@
-use parser::Parser;
+use html_parser::HTMLParser;
 
+mod css_parser;
 mod dom;
-mod parser;
+mod html_parser;
 
 fn main() {
-    Parser::parse("<html></html>".to_string());
+    HTMLParser::parse("<html></html>".to_string());
 }
