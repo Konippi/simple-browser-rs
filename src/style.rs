@@ -24,6 +24,7 @@ pub enum Display {
 
 impl<'a> StyledNode<'a> {
     // Get the value by given property name.
+    #[inline]
     pub fn value(&self, property_name: &str) -> Option<Value> {
         self.specified_values.get(property_name).cloned()
     }
@@ -118,6 +119,7 @@ fn match_rule<'a>(
 }
 
 // Check if a selector matches an element.
+#[inline]
 fn matches(elem: &ElementData, selector: &Selector) -> bool {
     match selector {
         Selector::Simple(simple) => matches_simple_selector(elem, simple),
