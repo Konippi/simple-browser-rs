@@ -2,6 +2,15 @@ use std::collections::HashMap;
 
 use crate::dom::{AttributeMap, Node};
 
+// TODO: The following features are not implemented:
+// - Comments
+// - Doctype declarations
+// - Escaped characters (like &amp;) and CDATA sections
+// - Self-closing tags: <br/> or <br> with no closing tag
+// - Error handling (e.g. unbalanced or improperly nested tags)
+// - Namespaces and other XHTML syntax: <html:body>
+// - Character encoding detection
+
 #[derive(Debug)]
 pub struct HTMLParser {
     pos: usize,
