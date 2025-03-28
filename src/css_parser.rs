@@ -1,3 +1,4 @@
+// TODO: Support CSS3.
 #[derive(Debug)]
 pub struct StyleSheet {
     pub rules: Vec<Rule>,
@@ -45,6 +46,7 @@ pub enum Value {
     Keyword(String),
     Length(f32, Unit),
     ColorValue(Color),
+    // TODO: Add more value types.
 }
 
 impl Value {
@@ -60,6 +62,7 @@ impl Value {
 #[derive(Debug, Clone)]
 pub enum Unit {
     Px,
+    // TODO: Add more units.
 }
 
 #[derive(Debug, Clone)]
@@ -277,6 +280,5 @@ impl CSSParser {
 
 // Check if a character is a valid identifier character.
 fn valid_identifier_char(c: char) -> bool {
-    // TODO: Include U+00A0 and higher.
-    matches!(c, 'a'..='z' | 'A'..='Z' | '0'..='9' | '-' | '_')
+    matches!(c, 'a'..='z' | 'A'..='Z' | '0'..='9' | '-' | '_' | '\u{00A0}'..='\u{10FFFF}')
 }
