@@ -9,10 +9,11 @@ use crate::{
 
 type PropertyMap = HashMap<String, Value>;
 
-struct StyledNode<'a> {
-    node: &'a Node,
-    specified_values: PropertyMap,
-    children: Vec<StyledNode<'a>>,
+#[derive(Debug)]
+pub struct StyledNode<'a> {
+    pub node: &'a Node,
+    pub specified_values: PropertyMap,
+    pub children: Vec<StyledNode<'a>>,
 }
 
 #[derive(PartialEq)]
