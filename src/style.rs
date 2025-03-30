@@ -7,8 +7,10 @@ use crate::{
     dom::{ElementData, Node, NodeType},
 };
 
+// The map from CSS property names to values.
 type PropertyMap = HashMap<String, Value>;
 
+// A node with associated styles.
 #[derive(Debug)]
 pub struct StyledNode<'a> {
     pub node: &'a Node,
@@ -83,6 +85,7 @@ fn specified_values(
     let mut values = HashMap::new();
     let mut rules = matching_rules(elem, stylesheet);
 
+    // Go through the rules in order of specificity.
     rules.sort_by(|a, b| a.0.cmp(&b.0));
 
     for (_, rule) in rules {
@@ -94,6 +97,7 @@ fn specified_values(
     return values;
 }
 
+// A rule with its specificity.
 type MatchedRule<'a> = (Specificity, &'a Rule);
 
 // Find all CSS rules that match the given element.
@@ -109,6 +113,7 @@ fn matching_rules<'a>(
 }
 
 // Match a CSS rule to an element.
+// Find the first selector that matches the element, because CSS parser stores the selectors from most- to least-specific.
 fn match_rule<'a>(
     elem: &ElementData,
     rule: &'a Rule,
@@ -143,10 +148,10 @@ fn matches_simple_selector(
     }
 
     // Check class selector.
-    if !selector
+    if selector
         .class
         .iter()
-        .any(|class| elem.classes().contains(class.as_str()))
+        .any(|class| !elem.classes().contains(class.as_str()))
     {
         return false;
     }
