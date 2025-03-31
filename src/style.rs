@@ -48,7 +48,7 @@ impl<'a> StyledNode<'a> {
     // Get the display value.
     pub fn display(&self) -> Display {
         match self.value("display") {
-            Some(Value::Keyword(s)) => match &*s {
+            Some(Value::Keyword(s)) => match s.as_str() {
                 "block" => Display::Block,
                 "none" => Display::None,
                 _ => Display::Inline,
