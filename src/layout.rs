@@ -40,7 +40,7 @@ enum BoxType<'a> {
     AnonymousBlock,
 }
 
-#[derive(Debug, Default)]
+#[derive(Clone, Copy, Debug, Default)]
 struct Dimensions {
     // Position of the content area
     content: Rectangle,
@@ -66,7 +66,7 @@ impl Dimensions {
     }
 }
 
-#[derive(Debug, Default)]
+#[derive(Clone, Copy, Debug, Default)]
 struct Rectangle {
     x: f32,
     y: f32,
@@ -85,7 +85,7 @@ impl Rectangle {
     }
 }
 
-#[derive(Debug, Default)]
+#[derive(Clone, Copy, Debug, Default)]
 struct EdgeSizes {
     left: f32,
     right: f32,
@@ -283,6 +283,14 @@ impl LayoutBox<'_> {
             // Increment the height so each child is laid out below the previous one.
             self.dimensions.content.height +=
                 child.dimensions.margin_box().height;
+        }
+    }
+
+    fn calc_block_height(&mut self) {
+        if let Some(Value::Length(h, Unit::Px)) =
+            self.get_style_node().value("height")
+        {
+            self.dimensions.content.height = h;
         }
     }
 }
