@@ -23,6 +23,7 @@ impl<'a> LayoutBox<'a> {
         }
     }
 
+    // Get the style node associated with this layout box.
     fn get_style_node(&self) -> &'a StyledNode<'a> {
         match self.box_type {
             BoxType::BlockNode(node) | BoxType::InlineNode(node) => node,
